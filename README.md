@@ -21,7 +21,7 @@ pip install .
 ### Dynamic Programming Algorithms
 Currently we have the following dynamic programming algorithms:
 
-`value_iteration`, `value_iteration`
+`policy_iteration`, `value_iteration`
 
 Here's an example of using the algorithms:
 
