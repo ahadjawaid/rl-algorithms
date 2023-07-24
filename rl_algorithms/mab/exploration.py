@@ -95,6 +95,14 @@ class EpsilonGreedyExponentialDecay(Strategy):
             action = np.random.randint(self.n_actions)
 
         return action
+    
+
+class OptimisticInitialization(PureExploitation):
+    def __init__(self, env: Env, n_episodes: int = 5000, optimisitic_value: float = 1.0, *args, **kwargs) -> None:
+        super().__init__(env, n_episodes, *args, **kwargs)
+
+        self.Q = np.full((self.n_actions), optimisitic_value, np.float64)
+        self.N = np.full((self.n_actions), optimisitic_value, np.float64)
 
 def linear_decay(n_episodes, decay_ratio, init_epsilon, min_epsilon):
     decay_episodes = int(n_episodes * decay_ratio)
