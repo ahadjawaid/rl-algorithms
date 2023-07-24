@@ -57,8 +57,7 @@ strategy = PureExploitation(env, n_episodes=1000)
 
 action_value, rewards = strategy.run()
 ```
-Output: 
-```
+```output
 PureExploitation episodes: 100% 1000/1000 [00:00<00:00, 124364.11it/s]
 ```
 
@@ -70,8 +69,7 @@ import multi_armed_bandits
 
 PureExploitation.test_strategy(n_arms=2, seed=42, n_episodes=1000)
 ```
-Output:
-```
+```output
 PureExploitation episodes: 100% 1000/1000 [00:00<00:00, 85948.85it/s]
 True action-value function: [-0.75275929  1.39196365]
 Predicted Action-value function: [-1.36461784  1.39664592]
