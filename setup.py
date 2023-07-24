@@ -8,5 +8,8 @@ setup(name='rl_algorithms',
       packages=['rl_algorithms', 'rl_algorithms.mab', 'rl_algorithms.dp'],
       author_email='',
       license='MIT License',
-      install_requires=['gym>=0.2.3'],
+      install_requires=[
+          'multi-armed-bandits @ git+https://github.com/ahadjawaid/multi-armed-bandits#egg=rl-algorithms',
+          'gym>=0.2.3'
+      ],
 )

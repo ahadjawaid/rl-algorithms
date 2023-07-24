@@ -4,6 +4,7 @@ import gym
 import multi_armed_bandits
 from gym import Env
 
+
 class Strategy:
     def __init__(self, env: Env, n_episodes: int = 5000, *args, **kwargs) -> None:
         self.env = env
