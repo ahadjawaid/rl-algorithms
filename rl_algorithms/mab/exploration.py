@@ -123,6 +123,25 @@ class Softmax(Strategy):
         action = np.random.choice(a=np.arange(len(probs)), size=1, p=probs)
         return int(action)
 
+
+class UpperConfidenceBound(Strategy):
+    def __init__(self, env: Env, n_episodes: int = 5000, confidence_value: float = 2., *args, **kwargs) -> None:
+        super().__init__(env, n_episodes)
+        self.confidence_value = confidence_value
+        self.episode = 0
+
+    def _action_selection(self, *args, **kwargs):
+        # Goes over all actions first to avoid divide by zero
+        if self.episode < self.n_actions:
+            action = self.episode
+        else:
+            uncertainty_bonus = self.confidence_value * np.sqrt(np.log(self.episode) / self.N)
+
+            action = np.argmax(self.Q + uncertainty_bonus)
+
+        self.episode += 1
+        return action
+
 def linear_decay(n_episodes, decay_ratio, init_value, min_value):
     decay_episodes = int(n_episodes * decay_ratio)
 
