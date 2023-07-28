@@ -147,7 +147,7 @@ class ThompsonSampling(Strategy):
     def __init__(self, env: Env, n_episodes: int = 5000, std_scalar: float = 1.0, 
                  std_shrink_constant: float = 0.1, *args, **kwargs) -> None:
         super().__init__(env, n_episodes)
-        assert std_shrink_constant > 0.
+        assert std_shrink_constant > 0.0
         
         self.std_scalar = std_scalar
         self.std_shrink_constant = std_shrink_constant
