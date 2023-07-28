@@ -42,7 +42,7 @@ V, policy, _ = policy_iteration(P)
 
 Currently we have the following exploration strategies:
 
-`PureExploitation`, `PureExploration`, `EpsilonGreedy`, `EpsilonGreedyLinearDecay`, `EpsilonGreedyExponentialDecay`, `OptimisticInitialization`
+`PureExploitation`, `PureExploration`, `EpsilonGreedy`, `EpsilonGreedyLinearDecay`, `EpsilonGreedyExponentialDecay`, `OptimisticInitialization`, `Softmax`, `UpperConfidenceBound`
 
 
 You can use a strategy over a number episodes by doing the following:
