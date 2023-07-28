@@ -1,5 +1,5 @@
 # rl-algorithms
-This package contains the reinforcement learning algorithms I implement to learn 
+This package contains the reinforcement learning algorithms
 
 ## Installation 
 ```
