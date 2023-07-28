@@ -5,6 +5,8 @@ import multi_armed_bandits
 from gym import Env
 
 
+multi_armed_bandits.register_environments()
+
 class Strategy:
     def __init__(self, env: Env, n_episodes: int = 5000, *args, **kwargs) -> None:
         self.env = env
@@ -48,7 +50,6 @@ class Strategy:
         print(f"True action-value function: {true_actions}")
         print(f"Predicted Action-value function: {Q}")
         print(f"Average episode reward: {round(np.sum(rewards) / strategy.n_episodes, rounding_value)}")
-
 
 
 class PureExploitation(Strategy):
