@@ -105,6 +105,24 @@ class OptimisticInitialization(PureExploitation):
         self.Q = np.full((self.n_actions), optimisitic_value, np.float64)
         self.N = np.full((self.n_actions), optimisitic_value, np.float64)
 
+
+class Softmax(Strategy):
+    def __init__(self, env: Env, n_episodes: int = 5000, init_temp=1.0, min_temp=0.05, decay_ratio=0.05):
+        super().__init__(env, n_episodes)
+
+        self.temperature_values = iter(linear_decay(n_episodes, decay_ratio, init_temp, min_temp))
+
+    def _action_selection(self, *args, **kwargs):
+        temperature = next(self.temperature_values)
+        scaled_Q = self.Q / temperature
+        normalized_Q = scaled_Q - np.max(scaled_Q)
+        probs = np.exp(normalized_Q) / np.sum(np.exp(normalized_Q))
+
+        assert np.isclose(probs.sum(), 1.0)
+        
+        action = np.random.choice(a=np.arange(len(probs)), size=1, p=probs)
+        return int(action)
+
 def linear_decay(n_episodes, decay_ratio, init_value, min_value):
     decay_episodes = int(n_episodes * decay_ratio)
 
