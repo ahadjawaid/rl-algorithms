@@ -4,7 +4,6 @@ import gym
 import multi_armed_bandits
 from gym import Env
 
-
 multi_armed_bandits.register_environments()
 
 class Strategy:
@@ -142,6 +141,24 @@ class UpperConfidenceBound(Strategy):
 
         self.episode += 1
         return action
+    
+
+class ThompsonSampling(Strategy):
+    def __init__(self, env: Env, n_episodes: int = 5000, std_scalar: float = 1.0, 
+                 std_shrink_constant: float = 0.1, *args, **kwargs) -> None:
+        super().__init__(env, n_episodes)
+        assert std_shrink_constant > 0.
+        
+        self.std_scalar = std_scalar
+        self.std_shrink_constant = std_shrink_constant
+
+    def _action_selection(self, *args, **kwargs):
+        means = self.Q
+        std = self.std_scalar / (np.sqrt(self.N) + self.std_shrink_constant)
+
+        samples = np.random.normal(loc=means, scale=std)
+
+        return np.argmax(samples)
 
 def linear_decay(n_episodes, decay_ratio, init_value, min_value):
     decay_episodes = int(n_episodes * decay_ratio)
