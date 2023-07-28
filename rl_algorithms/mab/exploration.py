@@ -38,7 +38,7 @@ class Strategy:
                       display_progress: bool = True, *args, **kwargs) -> None:  
 
         np.random.seed(seed)
-        env = gym.make(f"{n_arms}-Armed-Bandit")
+        env = gym.make(f"{n_arms}-armed-bandit")
 
         strategy = cls(*args, env=env, **kwargs)
         Q, rewards = strategy.run(display_progress, *args, **kwargs)
@@ -88,7 +88,7 @@ class EpsilonGreedyExponentialDecay(Strategy):
     def __init__(self, env: Env, n_episodes: int = 5000, init_epsilon=1.0, min_epsilon=0.05, decay_ratio=0.05) -> None:
         super().__init__(env, n_episodes)
 
-        self.decay_steps = iter(exponential_decay(n_episodes, init_epsilon, min_epsilon, decay_ratio))
+        self.decay_steps = iter(exponential_decay(n_episodes, decay_ratio , init_epsilon, min_epsilon))
 
     def _action_selection(self, *args, **kwargs):
         action = np.argmax(self.Q)
@@ -105,24 +105,24 @@ class OptimisticInitialization(PureExploitation):
         self.Q = np.full((self.n_actions), optimisitic_value, np.float64)
         self.N = np.full((self.n_actions), optimisitic_value, np.float64)
 
-def linear_decay(n_episodes, decay_ratio, init_epsilon, min_epsilon):
+def linear_decay(n_episodes, decay_ratio, init_value, min_value):
     decay_episodes = int(n_episodes * decay_ratio)
 
-    epsilon = init_epsilon
-    decay_step = (init_epsilon - min_epsilon) / decay_episodes
+    epsilon = init_value
+    decay_step = (init_value - min_value) / decay_episodes
     for e in range(n_episodes):
         if e < decay_episodes:
             epsilon -= decay_step
 
         yield epsilon
 
-def exponential_decay(n_episodes, init_epsilon, min_epsilon, decay_ratio):
+def exponential_decay(n_episodes, decay_ratio, init_value, min_value):
     decay_episodes = int(n_episodes * decay_ratio)
     rem_episodes = n_episodes - decay_episodes
     epsilons = 0.01
     epsilons /= np.logspace(-2, 0, decay_episodes) 
-    epsilons *= init_epsilon - min_epsilon 
-    epsilons += min_epsilon
+    epsilons *= init_value - min_value 
+    epsilons += min_value
     epsilons = np.pad(epsilons, (0, rem_episodes), 'edge')
 
     return epsilons
